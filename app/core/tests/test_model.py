@@ -11,7 +11,7 @@ class ModelTests(TestCase):
             password=password,
         )
 
-        slef.assertEqual(user.email, email)
+        self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
 
     def test_new_user_email_normalized(self):

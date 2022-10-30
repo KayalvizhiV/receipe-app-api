@@ -1,4 +1,4 @@
-from app import recipe
+
 from drf_spectacular.utils import(
     extend_schema_view,
     extend_schema,
@@ -7,7 +7,7 @@ from drf_spectacular.utils import(
 )
 
 
-from os import stat
+
 from rest_framework import (viewsets, mixins,status,)
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -92,7 +92,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 'assigned_only',
                 OpenApiTypes.INT, enum=[0,1],
                 description='filter by items assigned to recipes',
-            )
+            ),
         ]
     )
 )
@@ -110,18 +110,13 @@ class BaseRecipeAttrViewSet(mixins.DestroyModelMixin,
         assigned_only = bool(
             int(self.request.query_params.get('assigned_only',0))
         )
-        queryset = self.get_queryset
+        queryset = self.queryset
         if assigned_only:
             queryset = queryset.filter(recipe__isnull=False)
 
         return queryset.filter(
             user=self.request.user
         ).order_by('-name').distinct()
-
-
-
-
-        return self.queryset.filter(user=self.request.user).order_by('-name')
 
 
 
